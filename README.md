@@ -1,4 +1,4 @@
-DeppFlix-movie_api
+movie_api
 
 Building the server-side component of a “movies” web application. 
 The web application will provide users with access to information about different movies, directors, and genres. 
