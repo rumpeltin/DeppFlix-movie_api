@@ -118,45 +118,67 @@ let movies = [
 let users = [
   {
     name: 'user1',
-    favourites: [],
+    favourites: ["Platoon"],
     id: '1'
   }
 ]
 
 // GET requests
 // Welcome page
-app.get('/', (req, res) => {
-  res.send('Welcome to DeppFlix!');
+app.get("/", (req, res) => {
+  res.send("Welcome to DeppFlix!");
 });
 
 // All movies
-app.get('/movies', (req, res) => {
+app.get("/movies", (req, res) => {
   res.json(movies);
 });
 
 // All users
-app.get('/users', (req, res) => {
+app.get("/users", (req, res) => {
   res.json(users);
 });
 
 // GET data about a single movie by title
-app.get('/movies/:title', (req, res) => {
+app.get("/movies/:title", (req, res) => {
   res.json(movies.find((movie) =>
   { return movie.title === req.params.title}));
 });
 
-// GET data about a specific genre by name ("Horror") -- doesn't work
-app.get('/movies/genre/:genreName', (req, res) => {
-  res.json(movies.find((genreName) => {
-    return genreName === req.params.name}));s
+// GET data about a specific genre by name ("Horror")
+app.get("/movies/genre/:genreName", (req, res) => {
+  const { genreName } = req.params;
+  const genre = movies.find(
+    (movie) => movie.genre.name.toLowerCase() === genreName.toLowerCase()
+  );
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(404).send("Invalid Genre");
+  }
+});
+
+// GET data about a specific director by name
+app.get("/movies/director/:directorName", (req, res) => {
+  const { directorName } = req.params;
+  const director = movies.find(
+    (movie) => movie.director.name.toLowerCase() === directorName.toLowerCase()
+  );
+
+  if (director) {
+    res.status(200).json(director);
+  } else {
+    res.status(404).send("Director does not exist");
+  }
 });
 
 // ADD data for new user to list of users
-app.post('/users', (req, res) => {
-  let newUser = req.body;
+app.post("/users", (req, res) => {
+  const newUser = req.body;
 
   if (!newUser.name) {
-    const message = 'Missing name in request body';
+    const message = "Missing name in request body";
     res.status(400).send(message);
   } else {
     newUser.id = uuid.v4();
@@ -165,49 +187,67 @@ app.post('/users', (req, res) => {
   }
 });
 
-// DELETE a user by id -- doesn't work
-app.delete('/users/:Username', (req, res) => {
-  let user = user.find((user) => {
-    return user.id === req.params.id });
-
-    if (user) {
-      users = users.filter((obj) => { return obj.id !== req.params.id });
-      res.status(201).send('User ' + req.params.id + ' was deleted.');
-    }
-});
-
-// UPDATE data of a user (username) -- doesn't work
-app.put('/users/:id/:username', (req, res) => {
-  let user = users.find((user) => {
-    return user.name === req.params.name });
-
-    if (user) {
-      user.info[req.params.info] = parseInt(req.params.username);
-      res.status(201).send('User ' + req.params.name + ' was assigned the new username ' + req.params.username);
-    } else {
-      res.status(404).send('User ' + req.params.name + ' was not found.');
-    }
-});
-
-// PUT: allow users to update their user info -- doesn't work
-app.put('/users/:Username', (req, res) => {
-    users.findOneAndUpdate(Username === req.params.Username)},
-      {Username: req.body.Username}
-);
-
-// ADD movie to favourites -- doesn't work
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
-  users.findOneAndUpdate({ Username: req.params.Username }, {
-    favoriteMovies.push: { favoriteMovies: req.params.MovieID }
+// DELETE a user by id
+app.delete("/users/:Username", (req, res) => {
+  const { Username } = req.params;
+  const user = users.find((user) => {
+    return user.name === req.params.Username;
   });
+
+  if (user) {
+    res.status(200).send(`${Username} has been deleted.`);
+  } else {
+    res.status(400).send("No User Found");
+  }
 });
 
-// DELETE movie from favourites -- doesn't work
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
-  users.findOneAndUpdate({ Username: req.params.Username }, {
-    favoriteMovies.pull: { favoriteMovies: req.params.MovieID }
-  });
+// PUT allow users to update their user info
+app.put("/users/:Username", (req, res) => {
+  const { Username } = req.params;
+  const updatedUser = req.body;
+  const user = users.find((user) => user.name === Username);
+
+  if (user) {
+    user.name = updatedUser.name;
+    res.status(200).json(user.name);
+  } else {
+    res.status(400).send("No User Found");
+  }
 });
+
+
+// ADD movie to favourites
+app.post("/users/:Username/movies/:MovieID", (req, res) => {
+  const { Username, MovieID } = req.params;
+
+  const user = users.find((user) => user.name === Username);
+
+  if (user) {
+    user.favourites.push(MovieID);
+    res
+      .status(200)
+      .send(`${MovieID} has been added to ${Username}'s favorites.`);
+  } else {
+    res.status(400).send("No User Found");
+  }
+});
+
+// DELETE movie from favourites
+app.delete("/users/:Username/movies/:MovieID", (req, res) => {
+  const { Username, MovieID } = req.params;
+
+  const user = users.find((user) => user.name === Username);
+
+  if (user) {
+    user.favourites = user.favourites.filter((title) => title === MovieID);
+    res
+      .status(200)
+      .send(`${MovieID} has been deleted from user ${Username}'s favorites.`);
+  } else {
+    res.status(400).send("No User Found");
+  }
+});
+
 
 // Error handling
 app.use((err, req, res, next) => {
