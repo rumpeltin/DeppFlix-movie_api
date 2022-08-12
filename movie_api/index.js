@@ -1,4 +1,12 @@
 // imported modules
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/DeppFlix', { useNewUrlParser: true, useUnifiedTopology: true });
+
 const express = require('express');
   uuid = require('uuid');
   morgan = require('morgan');
@@ -21,17 +29,17 @@ let movies = [
     },
     director: {
       name: 'Rob Marshall',
-      dob: '01.01.1975'
+      birth: '1960'
   }},
   {
-    title: 'Charlie and the Chocolate Factorys',
+    title: 'Charlie and the Chocolate Factory',
     genre: {
       name: 'Comedy',
-      description: 'Epic quests and breath-taking scenery.. Adventure movies are well-rounded'
+      description: 'Need a bit of a laugh? Then this genre is perfect for you'
     },
     director: {
       name: 'Tim Burton',
-      dob: '01.01.1975'
+      birth: '1958'
   }},
   {
     title: 'PotC: Dead Man\'s Chest',
@@ -41,7 +49,7 @@ let movies = [
     },
     director: {
       name: 'Gore Verbinski',
-      dob: '01.01.1975'
+      birth: '1964'
   }},
   {
     title: 'Platoon',
@@ -51,7 +59,7 @@ let movies = [
     },
     director: {
       name: 'Oliver Stone',
-      dob: '01.01.1975'
+      birth: '1946'
   }},
   {
     title: 'Donnie Brasco',
@@ -61,7 +69,7 @@ let movies = [
     },
     director: {
       name: 'Mike Newell',
-      dob: '01.01.1975'
+      birth: '1942'
   }},
   {
     title: 'Alice in Wonderland',
@@ -71,7 +79,7 @@ let movies = [
     },
     director: {
       name: 'Tim Burton',
-      dob: '01.01.1975'
+      birth: '1958'
   }},
   {
     title: 'Public Enemies',
@@ -81,7 +89,7 @@ let movies = [
     },
     director: {
       name: 'Michael Mann',
-      dob: '01.01.1975'
+      birth: '1943'
   }},
   {
     title: 'A Nightmare on Elm Street',
@@ -91,7 +99,7 @@ let movies = [
     },
     director: {
       name: 'Wes Craven',
-      dob: '01.01.1975'
+      birth: '1939'
   }},
   {
     title: 'Fear and Loathing in Las Vegas',
@@ -100,8 +108,8 @@ let movies = [
       description: 'Epic quests and breath-taking scenery.. Adventure movies are well-rounded'
     },
     director: {
-      name: 'Terry Gillia',
-      dob: '01.01.1975'
+      name: 'Terry Gilliam',
+      birth: '1940'
   }},
   {
     title: 'Cry-Baby',
@@ -110,8 +118,8 @@ let movies = [
       description: 'Need a bit of a laugh? Then this genre is perfect for you'
     },
     director: {
-      name: 'John Watersa',
-      dob: '01.01.1975'
+      name: 'John Waters',
+      birth: '1946'
   }}
 ];
 
