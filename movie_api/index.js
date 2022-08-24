@@ -1,4 +1,12 @@
 // imported modules
+const express = require('express');
+  uuid = require('uuid');
+  morgan = require('morgan');
+  bodyParser = require('body-parser');
+
+const app = express();
+
+// importing mongoose database
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
@@ -7,129 +15,10 @@ const Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/DeppFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 
-const express = require('express');
-  uuid = require('uuid');
-  morgan = require('morgan');
-  bodyParser = require('body-parser');
-
-const app = express();
-
 // middleware
 app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
-
-// movie objects
-let movies = [
-  {
-    title: 'PotC: On Stranger Tides',
-    genre: {
-      name: 'Adventure',
-      description: 'Epic quests and breath-taking scenery.. Adventure movies are well-rounded'
-    },
-    director: {
-      name: 'Rob Marshall',
-      birth: '1960'
-  }},
-  {
-    title: 'Charlie and the Chocolate Factory',
-    genre: {
-      name: 'Comedy',
-      description: 'Need a bit of a laugh? Then this genre is perfect for you'
-    },
-    director: {
-      name: 'Tim Burton',
-      birth: '1958'
-  }},
-  {
-    title: 'PotC: Dead Man\'s Chest',
-    genre: {
-      name: 'Adventure',
-      description: 'Epic quests and breath-taking scenery.. Adventure movies are well-rounded'
-    },
-    director: {
-      name: 'Gore Verbinski',
-      birth: '1964'
-  }},
-  {
-    title: 'Platoon',
-    genre: {
-      name: 'Drama',
-      description: 'If you like drama, here is all of it for you!'
-    },
-    director: {
-      name: 'Oliver Stone',
-      birth: '1946'
-  }},
-  {
-    title: 'Donnie Brasco',
-    genre: {
-      name: 'Drama',
-      description: 'If you like drama, here is all of it for you!'
-    },
-    director: {
-      name: 'Mike Newell',
-      birth: '1942'
-  }},
-  {
-    title: 'Alice in Wonderland',
-    genre: {
-      name: 'Fantasy',
-      description: 'The most creative genres of all! Fun for a wide audience.'
-    },
-    director: {
-      name: 'Tim Burton',
-      birth: '1958'
-  }},
-  {
-    title: 'Public Enemies',
-    genre: {
-      name: 'Drama',
-      description: 'If you like drama, here is all of it for you.'
-    },
-    director: {
-      name: 'Michael Mann',
-      birth: '1943'
-  }},
-  {
-    title: 'A Nightmare on Elm Street',
-    genre: {
-      name: 'Horror',
-      description: 'You like to be scared? This is the right genre for you'
-    },
-    director: {
-      name: 'Wes Craven',
-      birth: '1939'
-  }},
-  {
-    title: 'Fear and Loathing in Las Vegas',
-    genre: {
-      name: 'Adventure',
-      description: 'Epic quests and breath-taking scenery.. Adventure movies are well-rounded'
-    },
-    director: {
-      name: 'Terry Gilliam',
-      birth: '1940'
-  }},
-  {
-    title: 'Cry-Baby',
-    genre: {
-      name: 'Comedy',
-      description: 'Need a bit of a laugh? Then this genre is perfect for you'
-    },
-    director: {
-      name: 'John Waters',
-      birth: '1946'
-  }}
-];
-
-let users = [
-  {
-    name: 'user1',
-    favourites: ["Platoon"],
-    id: '1'
-  }
-]
 
 // GET requests
 // Welcome page
