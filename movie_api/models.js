@@ -20,13 +20,13 @@ let movieSchema = mongoose.Schema({
 let userSchema = mongoose.Schema({
 	Username: {type: String, required: true},
 	Password: {type: String, required: true},
-	EMail: {type: String, required: true},
+	Email: {type: String, required: true},
 	DOB: Date,
 	FavouriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
 });
 
-let Movie = mongoose.model('Movie', movieSchema);
-let User = mongoose.model('User', userSchema);
+let movie = mongoose.model('Movie', movieSchema);
+let user = mongoose.model('User', userSchema);
 
-module.exports.Movie = Movie;
-module.exports.User = User;
+module.exports.movie = movie;
+module.exports.user = user;
